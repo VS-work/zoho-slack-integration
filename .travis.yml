@@ -1,34 +1,32 @@
 sudo: required
-services: docker
 language: node_js
-node_js: 
-  - "stable"
+node_js: 8.12.0
 
-cache:
-  directories:
-    - node_modules
+services: docker
 
 stages:
 - name: Precache
 - name: Lint
 - name: Deploy to Heroku
 
+cache:
+  directories:
+    - node_modules
 
 jobs:
   fast_finish: true
   include:
-- stage: Precache
+  - stage: Precache
     script: true
     install: npm i
-- stage: Lint
+  - stage: Lint
     skip_cleanup: true
     script: npm run lint  
-- stage: Deploy to Heroku
+  - stage: Deploy to Heroku
     script: echo "npm test disabled"
-  deploy:
-    - provider: script
-      script: ./deploy.sh
-      skip_cleanup: true
-      on:
-        branch: master
-
+    deploy:
+      - provider: script
+        script: ./deploy.sh
+        skip_cleanup: true
+        on:
+          branch: master
