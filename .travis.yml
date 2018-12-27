@@ -8,13 +8,27 @@ cache:
   directories:
     - node_modules
 
-script:
-  - npm run lint
+stages:
+- name: Precache
+- name: Lint
+- name: Deploy to Heroku
 
-deploy:
-  - provider: script
-    script: ./deploy.sh
+
+jobs:
+  fast_finish: true
+  include:
+- stage: Precache
+    script: true
+    install: npm i
+- stage: Lint
     skip_cleanup: true
-    on:
-      branch: master
+    script: npm run lint  
+- stage: Deploy to Heroku
+    script: echo "npm test disabled"
+  deploy:
+    - provider: script
+      script: ./deploy.sh
+      skip_cleanup: true
+      on:
+        branch: master
 
