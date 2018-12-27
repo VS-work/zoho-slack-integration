@@ -1,7 +1,6 @@
 // tslint:disable
 import { Get, Controller, Req, Res, Query, HttpStatus } from '@nestjs/common';
 import { IncomingWebhook } from '@slack/client';
-import { slackUrl } from '../slack-url';
 
 @Controller()
 export class AppController {
@@ -35,7 +34,7 @@ export class AppController {
     }
 
     buildDayOffMessage(query) {
-        const webhook = new IncomingWebhook(slackUrl);
+        const webhook = new IncomingWebhook(process.env.SLACK_TOKEN);
         let reasonMsg = '';
 
         if (query.reason) {
@@ -59,7 +58,7 @@ export class AppController {
     }
 
     buildSickLeaveMessage(query) {
-        const webhook = new IncomingWebhook(slackUrl);
+        const webhook = new IncomingWebhook(process.env.SLACK_TOKEN);
         let reasonMsg = '';
 
         if (query.reason) {
@@ -83,7 +82,7 @@ export class AppController {
     }
 
     buildRemoteWorkMessage(query) {
-        const webhook = new IncomingWebhook(slackUrl);
+        const webhook = new IncomingWebhook(process.env.SLACK_TOKEN);
         let reasonMsg = '';
 
         if (query.reason) {
@@ -106,7 +105,7 @@ export class AppController {
     }
 
     buildVacationMessage(query) {
-        const webhook = new IncomingWebhook(slackUrl);
+        const webhook = new IncomingWebhook(process.env.SLACK_TOKEN);
         let vacationMsg = `${query.firstName} ${query.lastName} took vacation day at ${query.from}.`;
 
         if (query.from && query.to && (query.from !== query.to)) {
